@@ -56,7 +56,7 @@ git clone https://github.com/roytseng-tw/mask-rcnn.pytorch.git
 
 ### Requirements
 
-Tested under python3.
+S
 
 - python packages
   - pytorch>=0.3.1
