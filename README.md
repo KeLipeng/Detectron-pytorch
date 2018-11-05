@@ -51,7 +51,7 @@ This implementation has the following features:
 Clone the repo:
 
 ```
-git clone https://github.com/roytseng-tw/mask-rcnn.pytorch.git
+git clone https://github.com/liuliu66/Detectron-pytorch.git
 ```
 
 ### Requirements
