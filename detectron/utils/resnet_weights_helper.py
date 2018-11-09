@@ -20,7 +20,7 @@ def load_pretrained_imagenet_weights(model):
     _, ext = os.path.splitext(cfg.RESNETS.IMAGENET_PRETRAINED_WEIGHTS)
     if ext == '.pkl':
         with open(cfg.RESNETS.IMAGENET_PRETRAINED_WEIGHTS, 'rb') as fp:
-            src_blobs = pickle.load(fp, encoding='latin1')
+            src_blobs = pickle.load(fp)
         if 'blobs' in src_blobs:
             src_blobs = src_blobs['blobs']
         pretrianed_state_dict = src_blobs

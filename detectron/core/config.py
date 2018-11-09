@@ -239,7 +239,7 @@ __C.TEST.FORCE_JSON_DATASET_EVAL = False
 # [Inferred value; do not set directly in a config]
 # Indicates if precomputed proposals are used at test time
 # Not set for 1-stage models and 2-stage models with RPN subnetwork enabled
-__C.TEST.PRECOMPUTED_PROPOSALS = True
+__C.TEST.PRECOMPUTED_PROPOSALS = False
 
 
 # ---------------------------------------------------------------------------- #
@@ -448,7 +448,7 @@ __C.MODEL.SHARE_RES5 = False
 # Whether to load imagenet pretrained weights
 # If True, path to the weight file must be specified.
 # See: __C.RESNETS.IMAGENET_PRETRAINED_WEIGHTS
-__C.MODEL.LOAD_IMAGENET_PRETRAINED_WEIGHTS = False
+__C.MODEL.LOAD_IMAGENET_PRETRAINED_WEIGHTS = True
 
 # ---------------------------------------------------------------------------- #
 # Unsupervise Pose

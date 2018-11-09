@@ -7,8 +7,10 @@ import pickle
 import resource
 import traceback
 import logging
-from collections import defaultdict
+from collections import defaultdict, OrderedDict
+import pprint
 
+from detectron.utils.torchsummary import summary
 import numpy as np
 import yaml
 import torch
@@ -139,8 +141,8 @@ def main():
     """Main function"""
 
     args = parse_args()
-    print('Called with args:')
-    print(args)
+    logger.info('Called with args:')
+    logger.info(cfg)
 
     if not torch.cuda.is_available():
         sys.exit("Need a CUDA device to run the code.")
@@ -151,6 +153,7 @@ def main():
         raise ValueError("Need Cuda device to run !")
 
     cfg_from_file(args.cfg_file)
+    logger.info(pprint.pformat(cfg))
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs)
 
@@ -160,7 +163,7 @@ def main():
     original_num_gpus = cfg.NUM_GPUS
     if args.batch_size is None:
         args.batch_size = original_batch_size
-    cfg.NUM_GPUS = torch.cuda.device_count()
+    #cfg.NUM_GPUS = torch.cuda.device_count()
     assert (args.batch_size % cfg.NUM_GPUS) == 0, \
         'batch_size: %d, NUM_GPUS: %d' % (args.batch_size, cfg.NUM_GPUS)
     cfg.TRAIN.IMS_PER_BATCH = args.batch_size // cfg.NUM_GPUS
@@ -245,6 +248,7 @@ def main():
 
     ### Model ###
     maskRCNN = Generalized_RCNN()
+    logger.info(maskRCNN)
 
     if cfg.CUDA:
         maskRCNN.cuda()
@@ -411,8 +415,11 @@ def main():
                 for key in input_data:
                     if key != 'roidb': # roidb is a list of ndarrays with inconsistent length
                         input_data[key] = list(map(Variable, input_data[key]))
-
-                net_outputs = maskRCNN(**input_data)
+                if step == args.start_step:
+                    net_outputs = summary(maskRCNN,input_data)
+                else:
+                    net_outputs = maskRCNN(**input_data)
+                    
                 training_stats.UpdateIterStats(net_outputs, inner_iter)
                 loss = net_outputs['total_loss']
                 loss.backward()

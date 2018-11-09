@@ -30,21 +30,21 @@ import yaml
 
 import torch
 
-from core.config import cfg
+from detectron.core.config import cfg
 # from core.rpn_generator import generate_rpn_on_dataset  #TODO: for rpn only case
 # from core.rpn_generator import generate_rpn_on_range
-from core.test import im_detect_all
-from datasets import task_evaluation
-from datasets.json_dataset import JsonDataset
-from modeling import model_builder
-import nn as mynn
-from utils.detectron_weight_helper import load_detectron_weight
-import utils.env as envu
-import utils.net as net_utils
-import utils.subprocess as subprocess_utils
-import utils.vis as vis_utils
-from utils.io import save_object
-from utils.timer import Timer
+from detectron.core.test import im_detect_all
+from detectron.datasets import task_evaluation
+from detectron.datasets.json_dataset import JsonDataset
+from detectron.modeling import model_builder
+import detectron.nn as mynn
+from detectron.utils.detectron_weight_helper import load_detectron_weight
+import detectron.utils.env as envu
+import detectron.utils.net as net_utils
+import detectron.utils.subprocess as subprocess_utils
+import detectron.utils.vis as vis_utils
+from detectron.utils.io1 import save_object
+from detectron.utils.timer import Timer
 
 logger = logging.getLogger(__name__)
 

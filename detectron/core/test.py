@@ -38,13 +38,13 @@ import pycocotools.mask as mask_util
 from torch.autograd import Variable
 import torch
 
-from core.config import cfg
-from utils.timer import Timer
-import utils.boxes as box_utils
-import utils.blob as blob_utils
-import utils.fpn as fpn_utils
-import utils.image as image_utils
-import utils.keypoints as keypoint_utils
+from detectron.core.config import cfg
+from detectron.utils.timer import Timer
+import detectron.utils.boxes as box_utils
+import detectron.utils.blob as blob_utils
+import detectron.utils.fpn as fpn_utils
+import detectron.utils.image as image_utils
+import detectron.utils.keypoints as keypoint_utils
 
 
 def im_detect_all(model, im, box_proposals=None, timers=None):

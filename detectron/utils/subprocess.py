@@ -33,7 +33,7 @@ import yaml
 import numpy as np
 import torch
 
-from core.config import cfg
+from detectron.core.config import cfg
 
 logger = logging.getLogger(__name__)
 

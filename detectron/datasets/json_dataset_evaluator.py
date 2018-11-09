@@ -28,9 +28,9 @@ import uuid
 
 from pycocotools.cocoeval import COCOeval
 
-from core.config import cfg
-from utils.io import save_object
-import utils.boxes as box_utils
+from detectron.core.config import cfg
+from detectron.utils.io1 import save_object
+import detectron.utils.boxes as box_utils
 
 logger = logging.getLogger(__name__)
 
@@ -134,10 +134,8 @@ def evaluate_boxes(
     res_file += '.json'
     _write_coco_bbox_results_file(json_dataset, all_boxes, res_file)
     # Only do evaluation on non-test sets (annotations are undisclosed on test)
-    if json_dataset.name.find('test') == -1:
-        coco_eval = _do_detection_eval(json_dataset, res_file, output_dir)
-    else:
-        coco_eval = None
+    coco_eval = _do_detection_eval(json_dataset, res_file, output_dir)
+
     # Optionally cleanup results json file
     if cleanup:
         os.remove(res_file)

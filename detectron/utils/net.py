@@ -180,3 +180,48 @@ def get_group_gn(dim):
         assert dim % num_groups == 0
         group_gn = num_groups
     return group_gn
+
+def print_net(model, namescope='gpu_0'):
+    """Print the model network."""
+    logger.info('Printing model: {}'.format(model.net.Name()))
+    op_list = model.net.Proto().op
+    for op in op_list:
+        input_name = op.input
+        # For simplicity: only print the first output
+        # Not recommended if there are split layers
+        output_name = str(op.output[0])
+        op_type = op.type
+        op_name = op.name
+
+        if namescope is None or output_name.startswith(namescope):
+            # Only print the forward pass network
+            if output_name.find('grad') >= 0 or output_name.find('__m') >= 0:
+                continue
+
+            try:
+                # Under some conditions (e.g., dynamic memory optimization)
+                # it is possible that the network frees some blobs when they are
+                # no longer needed. Handle this case...
+                output_shape = workspace.FetchBlob(output_name).shape
+            except BaseException:
+                output_shape = '<unknown>'
+
+            first_blob = True
+            op_label = op_type + (op_name if op_name == '' else ':' + op_name)
+            suffix = ' ------- (op: {})'.format(op_label)
+            for j in range(len(input_name)):
+                if input_name[j] in model.params:
+                    continue
+                input_blob = workspace.FetchBlob(input_name[j])
+                if isinstance(input_blob, np.ndarray):
+                    input_shape = input_blob.shape
+                    logger.info('{:28s}: {:20s} => {:28s}: {:20s}{}'.format(
+                        c2_utils.UnscopeName(str(input_name[j])),
+                        '{}'.format(input_shape),
+                        c2_utils.UnscopeName(str(output_name)),
+                        '{}'.format(output_shape),
+                        suffix))
+                    if first_blob:
+                        first_blob = False
+                        suffix = ' ------|'
+    logger.info('End of model: {}'.format(model.net.Name()))

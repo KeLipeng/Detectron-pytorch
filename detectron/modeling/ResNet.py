@@ -117,7 +117,7 @@ class ResNet_convX_body(nn.Module):
 
 class ResNet_roi_conv5_head(nn.Module):
     def __init__(self, dim_in, roi_xform_func, spatial_scale):
-        super().__init__()
+        super(ResNet_roi_conv5_head, self).__init__()
         self.roi_xform = roi_xform_func
         self.spatial_scale = spatial_scale
 
